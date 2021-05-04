@@ -1,17 +1,16 @@
 package io.krippakrull.github.buddyleague_euro_2021.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity(name = "teams")
 public class Team {
     private Integer teamId;
     private String teamName;
+    private String flagUrl;
 
     @Id
-    @Column(name = "team_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getTeamId() {
         return teamId;
     }
@@ -20,8 +19,6 @@ public class Team {
         this.teamId = teamId;
     }
 
-    @Basic
-    @Column(name = "team_name", nullable = false, length = 50)
     public String getTeamName() {
         return teamName;
     }
@@ -30,23 +27,24 @@ public class Team {
         this.teamName = teamName;
     }
 
+    public String getFlagUrl() {
+        return flagUrl;
+    }
+
+    public void setFlagUrl(String flagUrl) {
+        this.flagUrl = flagUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Team team = (Team) o;
-
-        if (teamId != null ? !teamId.equals(team.teamId) : team.teamId != null) return false;
-        if (teamName != null ? !teamName.equals(team.teamName) : team.teamName != null) return false;
-
-        return true;
+        return teamId.equals(team.teamId) && teamName.equals(team.teamName) && Objects.equals(flagUrl, team.flagUrl);
     }
 
     @Override
     public int hashCode() {
-        int result = teamId != null ? teamId.hashCode() : 0;
-        result = 31 * result + (teamName != null ? teamName.hashCode() : 0);
-        return result;
+        return Objects.hash(teamId, teamName, flagUrl);
     }
 }

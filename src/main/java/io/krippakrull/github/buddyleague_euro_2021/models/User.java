@@ -1,33 +1,36 @@
 package io.krippakrull.github.buddyleague_euro_2021.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Long userId;
+    @NotBlank(message = "Username cannot be empty.")
     private String userName;
+    @NotBlank(message = "Password cannot be empty.")
     private String password;
+    @NotBlank(message = "Email cannot be blank.")
     private String email;
     private Integer points;
+    private String avatar;
 
-    @Lob
-    @Type(type = "org.hibernate.type.BinaryType")
-    private byte[] avatar;
+    //@OneToMany(mappedBy="users")
+    //private List<Prediction> predictions;
 
-    @OneToMany(mappedBy="users")
-    private List<Prediction> predictions;
-
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -63,11 +66,11 @@ public class User {
         this.points = points;
     }
 
-    public byte[] getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(byte[] avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -83,7 +86,7 @@ public class User {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (points != null ? !points.equals(user.points) : user.points != null) return false;
-        if (!Arrays.equals(avatar, user.avatar)) return false;
+        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
 
         return true;
     }
@@ -95,7 +98,7 @@ public class User {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (points != null ? points.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(avatar);
+        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
         return result;
     }
 }
