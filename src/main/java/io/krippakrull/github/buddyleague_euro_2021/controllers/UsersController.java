@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.validation.*;
 import java.util.List;
 //TODO: Fix SonarLint problem with demanding a DTO for user
 @RestController
@@ -43,6 +43,7 @@ public class UsersController {
     public User update(@PathVariable Long id, @RequestBody @Valid User user) {
         //because this is a PUT, we expect all attributes to be passed in. A PATCH would only need the changes
         //TODO: Add validation that all attributes are passed in, otherwise return a 400 bad payload
+        //now returns 400 due to Validation annotation, look into custom error messages?
         User existingUser = userRepository.getOne(id);
         BeanUtils.copyProperties(user, existingUser, "userId");
         return userRepository.saveAndFlush(existingUser);

@@ -1,12 +1,19 @@
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
-                              user_id IDENTITY PRIMARY KEY,
-                              user_name VARCHAR(250) NOT NULL,
-                              password VARCHAR(250) NOT NULL,
-                              email VARCHAR(250) NOT NULL,
-                              points INT DEFAULT 0,
-                              avatar VARCHAR(250)
+                       user_id IDENTITY PRIMARY KEY,
+                       user_name VARCHAR(250) NOT NULL,
+                       password VARCHAR(250) NOT NULL,
+                       email VARCHAR(250) NOT NULL,
+                       points INT DEFAULT 0,
+                       avatar VARCHAR(250)
+);
+
+DROP TABLE IF EXISTS teams;
+CREATE TABLE teams (
+                       team_id IDENTITY PRIMARY KEY,
+                       team_name VARCHAR(250) NOT NULL,
+                       flag_url VARCHAR(250) NOT NULL
 );
 
 INSERT INTO users (user_name, password, email, avatar)
@@ -19,13 +26,6 @@ VALUES('Adolf', 'abc123', 'adolf@mail.com', 'https://www.123.io/avatar.gif'),
       ('Sixten', 'abc123', 'sixten@mail.com', 'https://www.123.io/avatar.gif'),
       ('David', 'abc123', 'david@mail.com', 'https://www.123.io/avatar.gif'),
       ('Olle', 'abc123', 'olle@mail.com', 'https://www.123.io/avatar.gif');
-
-DROP TABLE IF EXISTS teams;
-CREATE TABLE teams (
-                       team_id IDENTITY PRIMARY KEY,
-                       team_name VARCHAR(250) NOT NULL,
-                       flag_url VARCHAR(250) NOT NULL
-);
 
 INSERT INTO teams (team_name, flag_url)
 VALUES('Turkey', 'https://www.123.com/flag.gif'),
