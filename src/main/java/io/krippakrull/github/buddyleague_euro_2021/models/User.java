@@ -15,7 +15,7 @@ import java.util.Set;
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,21 +25,22 @@ public class User {
     @Size(max = 50)
     private String username;
 
+    @NotBlank(message = "Email cannot be blank.")
+    @Size(max = 100)
+    //@Email
+    private String email;
+
     @NotBlank(message = "Password cannot be empty.")
-    @Size(max = 50)
+    @Size(max = 100)
     //@JsonIgnore should I use this for password or not, ask Mahesh?
     private String password;
 
-    @NotBlank(message = "Email cannot be blank.")
-    @Size(max = 100)
-    @Email
-    private String email;
 
-    @Column(columnDefinition = "default 0")
+
+
     private Integer points;
 
     @Size(max = 255)
-    @Column(columnDefinition = "default 'https://www.avatars.com/avatar.gif'")
     private String avatar;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -54,11 +55,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password, String email, String avatar) {
+    public User(String username, String email, String password) {
         this.username = username;
-        this.password = password;
         this.email = email;
-        this.avatar = avatar;
+        this.password = password;
     }
 
     public Long getId() {

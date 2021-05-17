@@ -1,5 +1,8 @@
 package io.krippakrull.github.buddyleague_euro_2021.security;
 
+import io.krippakrull.github.buddyleague_euro_2021.security.jwt.AuthEntryPointJwt;
+import io.krippakrull.github.buddyleague_euro_2021.security.jwt.AuthTokenFilter;
+import io.krippakrull.github.buddyleague_euro_2021.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter;
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    };
 
     //TODO: read more
     @Override
@@ -58,6 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/test/**").permitAll()
                 .anyRequest().authenticated();
 
-        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
