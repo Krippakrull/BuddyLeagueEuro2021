@@ -1,53 +1,53 @@
 package io.krippakrull.github.buddyleague_euro_2021.controllers;
 
-import io.krippakrull.github.buddyleague_euro_2021.models.Team;
-import io.krippakrull.github.buddyleague_euro_2021.repositories.TeamRepository;
+import io.krippakrull.github.buddyleague_euro_2021.models.Game;
+import io.krippakrull.github.buddyleague_euro_2021.repositories.GameRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//TODO: Fix SonarLint problem with demanding a DTO for team
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/teams")
-public class TeamsController {
+@RequestMapping("/api/games")
+public class GameController {
 
     @Autowired
-    private TeamRepository teamRepository;
+    private GameRepository gameRepository;
 
     @GetMapping
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public List<Team> list() {
-        return teamRepository.findAll();
+    public List<Game> list() {
+        return gameRepository.findAll();
     }
 
     @GetMapping
     @RequestMapping("{id}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public Team get (@PathVariable Long id) {
-        return teamRepository.getOne(id);
+    public Game get (@PathVariable Long id) {
+        return gameRepository.getOne(id);
     }
 
     @PostMapping
-    public Team create(@RequestBody final Team team) {
-        return teamRepository.saveAndFlush(team);
+    public Game create(@RequestBody final Game game) {
+        return gameRepository.saveAndFlush(game);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Long id) {
         //also need to check for children records before delete
         //homework?
-        teamRepository.deleteById(id);
+        gameRepository.deleteById(id);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public Team update(@PathVariable Long id, @RequestBody Team team) {
+    public Game update(@PathVariable Long id, @RequestBody Game game) {
         //because this is a PUT, we expect all attributes to be passed in. A PATCH would only need the changes
         //TODO: Add validation that all attributes are passed in, otherwise return a 400 bad payload
-        Team existingTeam = teamRepository.getOne(id);
-        BeanUtils.copyProperties(team, existingTeam, "teamId");
-        return teamRepository.saveAndFlush(existingTeam);
+        Game existingGame = gameRepository.getOne(id);
+        BeanUtils.copyProperties(game, existingGame, "gameId");
+        return gameRepository.saveAndFlush(existingGame);
     }
 }

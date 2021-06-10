@@ -15,7 +15,7 @@ import java.util.Set;
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class User {
 
     @NotBlank(message = "Email cannot be blank.")
     @Size(max = 100)
-    //@Email
+    @Email
     private String email;
 
     @NotBlank(message = "Password cannot be empty.")

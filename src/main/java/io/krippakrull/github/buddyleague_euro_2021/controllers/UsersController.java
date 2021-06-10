@@ -4,25 +4,29 @@ import io.krippakrull.github.buddyleague_euro_2021.models.User;
 import io.krippakrull.github.buddyleague_euro_2021.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.*;
 import java.util.List;
 //TODO: Fix SonarLint problem with demanding a DTO for user
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
 public class UsersController {
 
     @Autowired
     private UserRepository userRepository;
 
     @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<User> list() {
         return userRepository.findAll();
     }
 
     @GetMapping
     @RequestMapping("{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public User get (@PathVariable Long id) {
         return userRepository.getOne(id);
     }
