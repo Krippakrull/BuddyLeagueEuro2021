@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 //TODO: Fix SonarLint problem with demanding a DTO for team
@@ -46,6 +47,7 @@ public class PredictionController {
     public List<Prediction> getByUser (@PathVariable Long id) {
         return predictionRepository.findByUserId(id);
     }
+
 
     @PostMapping
     public Prediction create(@RequestBody final Prediction prediction) {
@@ -88,4 +90,15 @@ public class PredictionController {
         prediction.setScores(scores);
         return predictionRepository.saveAndFlush(prediction);
     }
+
+    @GetMapping
+    @RequestMapping("/byuser/{uid}/{gid}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public Prediction getByUserAndGame (@PathVariable Long uid, @PathVariable Long gid) {
+        if (predictionRepository.existsByUserIdAndGameId(uid, gid)) {
+            return predictionRepository.findByUserIdAndGameId(uid, gid);
+        }
+        return null;
+    }
+
 }

@@ -8,13 +8,15 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String email;
+    private int points;
     private List<String> roles;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+    public JwtResponse(String accessToken, Long id, String username, String email, int points, List<String> roles) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
         this.email = email;
+        this.points = points;
         this.roles = roles;
     }
 
@@ -56,6 +58,14 @@ public class JwtResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public List<String> getRoles() {

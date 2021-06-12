@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface PredictionRepository extends JpaRepository<Prediction, Long> {
     List<Prediction> findByUserId(Long id);
+    Prediction findByUserIdAndGameId(Long userId, Long gameId);
+    boolean existsByUserIdAndGameId(Long userId, Long gameId);
 }

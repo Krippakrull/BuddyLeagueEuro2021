@@ -53,6 +53,7 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        int userPoints = userRepository.getOne(userDetails.getId()).getPoints();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
@@ -61,6 +62,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                userPoints,
                 roles));
     }
 
@@ -111,6 +113,8 @@ public class AuthController {
             });
         }
         user.setRoles(roles);
+        // Dirty hack because JPA-annotation doesn't seem to work for setting default values?
+        user.setPoints(0);
         System.out.println(user);
         userRepository.save(user);
 

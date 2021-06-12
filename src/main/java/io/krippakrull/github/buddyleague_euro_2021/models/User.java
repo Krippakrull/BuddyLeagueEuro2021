@@ -40,6 +40,7 @@ public class User {
 
     private Integer points;
 
+
     @Size(max = 255)
     private String avatar;
 
