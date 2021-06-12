@@ -1,45 +1,81 @@
 package io.krippakrull.github.buddyleague_euro_2021.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
-import java.util.List;
 
-@Entity(name = "users")
+import javax.validation.constraints.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+})
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
+
     @NotBlank(message = "Username cannot be empty.")
-    private String userName;
-    @NotBlank(message = "Password cannot be empty.")
-    private String password;
+    @Size(max = 50)
+    private String username;
+
     @NotBlank(message = "Email cannot be blank.")
+    @Size(max = 100)
+    @Email
     private String email;
+
+    @NotBlank(message = "Password cannot be empty.")
+    @Size(max = 100)
+    //@JsonIgnore should I use this for password or not, ask Mahesh?
+    private String password;
+
+
+
+
     private Integer points;
+
+
+    @Size(max = 255)
     private String avatar;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     //@OneToMany(mappedBy="users")
     //private List<Prediction> predictions;
 
-    public Long getUserId() {
-        return userId;
+
+    public User() {
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setId(Long userId) {
+        this.id = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -74,31 +110,39 @@ public class User {
         this.avatar = avatar;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (userId != null ? !userId.equals(user.userId) : user.userId != null) return false;
-        if (userName != null ? !userName.equals(user.userName) : user.userName != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (points != null ? !points.equals(user.points) : user.points != null) return false;
-        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
-
-        return true;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    @Override
-    public int hashCode() {
-        int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (points != null ? points.hashCode() : 0);
-        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
-        return result;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        User user = (User) o;
+//
+//        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+//        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+//        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+//        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+//        if (points != null ? !points.equals(user.points) : user.points != null) return false;
+//        if (avatar != null ? !avatar.equals(user.avatar) : user.avatar != null) return false;
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = id != null ? id.hashCode() : 0;
+//        result = 31 * result + (username != null ? username.hashCode() : 0);
+//        result = 31 * result + (password != null ? password.hashCode() : 0);
+//        result = 31 * result + (email != null ? email.hashCode() : 0);
+//        result = 31 * result + (points != null ? points.hashCode() : 0);
+//        result = 31 * result + (avatar != null ? avatar.hashCode() : 0);
+//        return result;
+//    }
 }

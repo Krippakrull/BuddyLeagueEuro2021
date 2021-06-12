@@ -1,22 +1,34 @@
 package io.krippakrull.github.buddyleague_euro_2021.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity(name = "teams")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Team {
-    private Integer teamId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String teamName;
     private String flagUrl;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer getTeamId() {
-        return teamId;
+//    @OneToMany(mappedBy = "home_games")
+//    private Set<Game> homeGames = new HashSet<>();
+//
+//    @OneToMany(mappedBy = "away_games")
+//    private Set<Game> awayGames = new HashSet<>();
+
+    public Long getId() {
+        return id;
     }
 
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+    public void setId(Long teamId) {
+        this.id = teamId;
     }
 
     public String getTeamName() {
@@ -35,16 +47,32 @@ public class Team {
         this.flagUrl = flagUrl;
     }
 
+//    public Set<Game> getHomeGames() {
+//        return homeGames;
+//    }
+//
+//    public void setHomeGames(Set<Game> homeGames) {
+//        this.homeGames = homeGames;
+//    }
+//
+//    public Set<Game> getAwayGames() {
+//        return awayGames;
+//    }
+//
+//    public void setAwayGames(Set<Game> awayGames) {
+//        this.awayGames = awayGames;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return teamId.equals(team.teamId) && teamName.equals(team.teamName) && Objects.equals(flagUrl, team.flagUrl);
+        return id.equals(team.id) && teamName.equals(team.teamName) && Objects.equals(flagUrl, team.flagUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teamId, teamName, flagUrl);
+        return Objects.hash(id, teamName, flagUrl);
     }
 }

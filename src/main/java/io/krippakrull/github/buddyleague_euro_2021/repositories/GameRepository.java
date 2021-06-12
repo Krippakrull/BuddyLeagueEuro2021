@@ -1,5 +1,6 @@
 package io.krippakrull.github.buddyleague_euro_2021.repositories;
 
+import io.krippakrull.github.buddyleague_euro_2021.models.Game;
 import io.krippakrull.github.buddyleague_euro_2021.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,10 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
+public interface GameRepository extends JpaRepository<Game, Long> {
+    Optional<Game> findById(Long id);
 
-    Boolean existsByUsername(String username);
-
-    Boolean existsByEmail(String email);
 }

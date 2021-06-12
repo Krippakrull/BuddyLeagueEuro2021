@@ -1,31 +1,8 @@
-DROP TABLE IF EXISTS users;
 
-CREATE TABLE users (
-                              user_id IDENTITY PRIMARY KEY,
-                              user_name VARCHAR(250) NOT NULL,
-                              password VARCHAR(250) NOT NULL,
-                              email VARCHAR(250) NOT NULL,
-                              points INT DEFAULT 0,
-                              avatar VARCHAR(250)
-);
-
-INSERT INTO users (user_name, password, email, avatar)
-VALUES('Adolf', 'abc123', 'adolf@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Emma', 'abc123', 'emma@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Sara', 'abc123', 'sara@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Anna', 'abc123', 'anna@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Tilde', 'abc123', 'tilde@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Lisa', 'abc123', 'lisa@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Sixten', 'abc123', 'sixten@mail.com', 'https://www.123.io/avatar.gif'),
-      ('David', 'abc123', 'david@mail.com', 'https://www.123.io/avatar.gif'),
-      ('Olle', 'abc123', 'olle@mail.com', 'https://www.123.io/avatar.gif');
-
-DROP TABLE IF EXISTS teams;
-CREATE TABLE teams (
-                       team_id IDENTITY PRIMARY KEY,
-                       team_name VARCHAR(250) NOT NULL,
-                       flag_url VARCHAR(250) NOT NULL
-);
+INSERT INTO roles (name)
+VALUES('ROLE_USER'),
+('ROLE_MODERATOR'),
+('ROLE_ADMIN');
 
 INSERT INTO teams (team_name, flag_url)
 VALUES('Turkey', 'https://www.123.com/flag.gif'),
@@ -52,3 +29,14 @@ VALUES('Turkey', 'https://www.123.com/flag.gif'),
       ('Portugal', 'https://www.123.com/flag.gif'),
       ('France', 'https://www.123.com/flag.gif'),
       ('Germany', 'https://www.123.com/flag.gif');
+
+INSERT INTO users (username, email, password)
+VALUES('user', 'user@mail.com', '$2a$10$8PEbVuwWxaSLVBJG2jdW9ORMMJbcPME/zeKlTYjzDG3QYTUlhdQ5e'),
+      ('mod', 'mod@mail.com', '$2a$10$8PEbVuwWxaSLVBJG2jdW9ORMMJbcPME/zeKlTYjzDG3QYTUlhdQ5e'),
+      ('admin', 'admin@mail.com', '$2a$10$8PEbVuwWxaSLVBJG2jdW9ORMMJbcPME/zeKlTYjzDG3QYTUlhdQ5e');
+
+INSERT INTO user_roles (user_id, role_id)
+VALUES (1, 1),
+       (2, 1),
+       (2, 2),
+       (3, 3);
