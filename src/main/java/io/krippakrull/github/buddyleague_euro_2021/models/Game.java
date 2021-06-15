@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Timestamp startTime;
@@ -28,6 +27,19 @@ public class Game {
     private Integer homeTeamScore;
 
     private Integer awayTeamScore;
+
+    public Game() {
+    }
+
+    public Game(Long id, Timestamp startTime, Team homeTeam, Team awayTeam, Winner winner, Integer homeTeamScore, Integer awayTeamScore) {
+        this.id = id;
+        this.startTime = startTime;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.winner = winner;
+        this.homeTeamScore = homeTeamScore;
+        this.awayTeamScore = awayTeamScore;
+    }
 
     public Long getGameId() {
         return id;

@@ -8,8 +8,12 @@ import io.krippakrull.github.buddyleague_euro_2021.repositories.TeamRepository;
 import io.krippakrull.github.buddyleague_euro_2021.repositories.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -99,6 +103,22 @@ public class PredictionController {
             return predictionRepository.findByUserIdAndGameId(uid, gid);
         }
         return null;
+    }
+
+    @GetMapping
+    @RequestMapping("/apidata")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public String getApiData () {
+        WebClient webClient = WebClient.builder()
+                .baseUrl("https://api.football-data.org/v2/competitions/2018/")
+                .defaultHeader("X-Auth-Token", "13b739b1474f45b5a4091a5f3a4d9948")
+                .build();
+        String Json = webClient.get()
+                .uri("/teams/")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        return Json;
     }
 
 }

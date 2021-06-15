@@ -12,7 +12,6 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String teamName;
     private String flagUrl;
@@ -22,6 +21,16 @@ public class Team {
 //
 //    @OneToMany(mappedBy = "away_games")
 //    private Set<Game> awayGames = new HashSet<>();
+
+
+    public Team() {
+    }
+
+    public Team(Long id, String teamName, String flagUrl) {
+        this.id = id;
+        this.teamName = teamName;
+        this.flagUrl = flagUrl;
+    }
 
     public Long getId() {
         return id;

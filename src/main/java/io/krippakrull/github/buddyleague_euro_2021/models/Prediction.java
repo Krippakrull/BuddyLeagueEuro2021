@@ -1,5 +1,6 @@
 package io.krippakrull.github.buddyleague_euro_2021.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -23,6 +24,7 @@ public class Prediction {
     private Game game;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 

@@ -2,12 +2,15 @@ package io.krippakrull.github.buddyleague_euro_2021.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 
 import javax.validation.constraints.*;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -49,8 +52,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    //@OneToMany(mappedBy="users")
-    //private List<Prediction> predictions;
+    @OneToMany(mappedBy="user")
+    @JsonManagedReference
+    private Set<Prediction> predictions = new HashSet<>();
 
 
     public User() {
@@ -118,7 +122,15 @@ public class User {
         this.roles = roles;
     }
 
-//    @Override
+    public Set<Prediction> getPredictions() {
+        return predictions;
+    }
+
+    public void setPredictions(Set<Prediction> predictions) {
+        this.predictions = predictions;
+    }
+
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
 //        if (o == null || getClass() != o.getClass()) return false;
